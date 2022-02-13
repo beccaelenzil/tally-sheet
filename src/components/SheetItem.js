@@ -1,7 +1,7 @@
-const SheetItem = ({ item, sheetData }) => {
+const SheetItem = ({ name, amount }) => {
   return (
     <li>
-      {item} : {sheetData[item]}
+      {name} : {amount}
     </li>
   );
 };
