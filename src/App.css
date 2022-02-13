@@ -1,9 +1,16 @@
+#change-buttons {
+  margin-left: 5px
+}
+
 nav {
   display: flex
 }
 
 li {
   list-style-type: none;
+  display: flex;
+  margin: 10px
+  
 }
 
 .App {

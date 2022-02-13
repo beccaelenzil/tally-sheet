@@ -6,20 +6,22 @@ const SheetItem = ({ name, amount }) => {
   return (
     <li>
       {name} : {count}
-      <button
-        onClick={() => {
-          setCount(count + 1);
-        }}
-      >
-        ⬆️
-      </button>
-      <button
-        onClick={() => {
-          setCount(count - 1);
-        }}
-      >
-        ⬇️
-      </button>
+      <div id="change-buttons">
+        <button
+          onClick={() => {
+            setCount(count + 1);
+          }}
+        >
+          ⬆️
+        </button>
+        <button
+          onClick={() => {
+            count > 0 ? setCount(count - 1) : setCount(count);
+          }}
+        >
+          ⬇️
+        </button>
+      </div>
     </li>
   );
 };
