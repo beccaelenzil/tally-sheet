@@ -49,6 +49,11 @@ const UserSheetData = [
         amount: 2,
         id: 2,
       },
+      {
+        name: "rose",
+        amount: 2,
+        id: 2,
+      },
     ],
   },
 ];
@@ -75,10 +80,10 @@ const UserSheetData = [
 // };
 
 function App() {
-  const [name, setName] = useState("");
+  // const [username, setUserName] = useState("");
   const [category, setCategory] = useState("");
-  const [viewCategories, setViewCategories] = useState(false);
-  const viewHide = viewCategories ? "Hide" : "View";
+  // const [viewCategories, setViewCategories] = useState(false);
+  // const viewHide = viewCategories ? "Hide" : "View";
 
   const categories = UserSheetData.map((sheet) => sheet.name);
   const tallySheetData = UserSheetData.filter(
@@ -90,6 +95,9 @@ function App() {
       <header className="App-header">
         <NavBar categories={categories} setCategory={setCategory} />
         {category ? "" : <h1>Tally Sheet</h1>}
+        <div id="tally_sheet">
+          {category ? <TallySheet sheetData={tallySheetData[0]} /> : ""}
+        </div>
         {/* <LoginForm name={name} setName={setName} /> */}
         {/* {name ? <CategoryList /> : "You must login to see Tally Sheets"} */}
         {/* <div>
@@ -108,9 +116,6 @@ function App() {
             )}
           </nav>
         </div> */}
-        <div>
-          {category ? <TallySheet sheetData={tallySheetData[0]} /> : ""}
-        </div>
       </header>
     </div>
   );
