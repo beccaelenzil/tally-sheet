@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 //import LoginForm from "./components/LoginForm";
 import TallySheet from "./components/TallySheet";
-//import CategoryList from "./components/CategoryList";
-import NavBar from "./components/NavBar";
+import OldNavBar from "./components/OldNavBar";
 import "./App.css";
 
 const UserSheetData = [
@@ -96,29 +95,13 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <NavBar categories={categories} setCategory={setCategory} />
+        <OldNavBar categories={categories} setCategory={setCategory} />
         {category ? "" : <h1>Tally Sheet</h1>}
         <div id="tally_sheet">
           {category ? <TallySheet sheetData={tallySheetData[0]} /> : ""}
         </div>
         {/* <LoginForm name={name} setName={setName} /> */}
         {/* {name ? <CategoryList /> : "You must login to see Tally Sheets"} */}
-        {/* <div>
-          <nav>options[i].type
-            {category !== "" ? (
-              <button onClick={() => setViewCategories(!viewCategories)}>
-                {viewHide} Categories
-              </button>
-            ) : (
-              ""
-            )}
-            {viewCategories || category === "" ? (
-              <CategoryList categories={categories} setCategory={setCategory} />
-            ) : (
-              ""
-            )}
-          </nav>
-        </div> */}
       </header>
     </div>
   );
