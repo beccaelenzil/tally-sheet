@@ -1,16 +1,30 @@
 import SheetItem from "./SheetItem";
+import "./TallySheet.css";
 
 const TallySheet = ({ sheetData }) => {
   const tallyData = sheetData.items.map((item) => {
-    return <SheetItem key={item.id} name={item.name} amount={item.amount} />;
+    return (
+      <SheetItem key={item.id} name={item.item_name} amount={item.amount} />
+    );
   });
 
   return (
-    <div>
-      <h1>{sheetData.name}</h1>
-      <ul>{tallyData}</ul>
+    <div id="tallySheet" className="card">
+      <img
+        className="card-img-top"
+        src={sheetData.sheet_image}
+        alt={sheetData.sheet_name}
+      ></img>
+      <div className="card-body row">
+        <ul className="card-text">{tallyData}</ul>
+      </div>
     </div>
   );
+
+  //   {/* <div className="tallyData">
+  //     <ul>{tallyData}</ul>
+  //   </div> */}
+  // );
 };
 
 export default TallySheet;

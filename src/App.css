@@ -2,6 +2,10 @@
   margin-left: 5px
 }
 
+#welcome {
+  padding: 20px
+}
+
 nav {
   display: flex
 }
@@ -17,6 +21,16 @@ li {
   text-align: center;
 }
 
+.App-title {
+  padding: 10px;
+  margin: 20px;
+  background-color: white;
+  border-radius: 10px;
+  font-size: 2em;
+  /* border:white; */
+  color: #24527a
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -29,7 +43,7 @@ li {
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #24527a;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -39,15 +53,4 @@ li {
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
-}
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}

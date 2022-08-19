@@ -1,0 +1,15 @@
+.sheetItem__grid {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.change-button {
+    margin: 1px
+}
+
+.sheetItem {
+    border: none;
+    background-color: lightgoldenrodyellow;
+    width: 100%
+}
