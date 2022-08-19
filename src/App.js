@@ -7,50 +7,53 @@ import "./App.css";
 
 const UserSheetData = [
   {
-    name: "birds",
+    sheet_name: "birds",
+    id: 1,
     items: [
       {
-        name: "robin",
+        item_name: "robin",
         amount: 5,
         id: 1,
       },
       {
-        name: "bluejay",
+        item_name: "bluejay",
         amount: 2,
         id: 2,
       },
     ],
   },
   {
-    name: "trees",
+    sheet_name: "trees",
+    id: 2,
     items: [
       {
-        name: "fir",
+        item_name: "fir",
         amount: 5,
         id: 1,
       },
       {
-        name: "spruce",
+        item_name: "spruce",
         amount: 2,
         id: 2,
       },
     ],
   },
   {
-    name: "flowers",
+    sheet_name: "flowers",
+    id: 3,
     items: [
       {
-        name: "daisy",
+        item_name: "daisy",
         amount: 5,
         id: 1,
       },
       {
-        name: "daffodil",
+        item_name: "daffodil",
         amount: 2,
         id: 2,
       },
       {
-        name: "rose",
+        item_name: "rose",
         amount: 2,
         id: 3,
       },
@@ -85,9 +88,9 @@ function App() {
   // const [viewCategories, setViewCategories] = useState(false);
   // const viewHide = viewCategories ? "Hide" : "View";
 
-  const categories = UserSheetData.map((sheet) => sheet.name);
+  const categories = UserSheetData.map((sheet) => sheet.sheet_name);
   const tallySheetData = UserSheetData.filter(
-    (sheet) => sheet.name === category
+    (sheet) => sheet.sheet_name === category
   );
 
   return (
@@ -101,7 +104,7 @@ function App() {
         {/* <LoginForm name={name} setName={setName} /> */}
         {/* {name ? <CategoryList /> : "You must login to see Tally Sheets"} */}
         {/* <div>
-          <nav>
+          <nav>options[i].type
             {category !== "" ? (
               <button onClick={() => setViewCategories(!viewCategories)}>
                 {viewHide} Categories

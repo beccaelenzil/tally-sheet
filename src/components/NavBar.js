@@ -4,6 +4,7 @@ import "react-dropdown/style.css";
 
 const NavBar = ({ categories, setCategory }) => {
   let options = categories;
+  console.log(options);
   options = ["Select TallySheet", ...options];
 
   const defaultOption = options[0];
