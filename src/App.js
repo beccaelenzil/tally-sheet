@@ -2,7 +2,9 @@ import React, { useState } from "react";
 //import LoginForm from "./components/LoginForm";
 import TallySheet from "./components/TallySheet";
 import NavBar from "./components/NavBar";
+import NewCategoryForm from "./components/NewCategoryForm";
 import "./App.css";
+import _ from "lodash";
 
 const UserSheetData = [
   {
@@ -89,22 +91,81 @@ const UserSheetData = [
 
 function App() {
   // const [username, setUserName] = useState("");
+  const [data, setData] = useState(UserSheetData);
   const [category, setCategory] = useState("");
+  const [warning, setWarning] = useState({ on: false, message: "" });
 
-  const categories = UserSheetData.map((sheet) => sheet.sheet_name);
+  const categories = data.map((sheet) => sheet.sheet_name);
 
-  const tallySheetData = UserSheetData.filter(
-    (sheet) => sheet.sheet_name === category
-  );
+  const tallySheetData = data.filter((sheet) => sheet.sheet_name === category);
+
+  const addCategory = (category) => {
+    if (categories.includes(category)) {
+      setWarning({
+        on: true,
+        message: `${category} is already in the list of categories`,
+      });
+    } else {
+      const new_id = data[data.length - 1].id + 1;
+      const newData = _.cloneDeep(data);
+      newData.push({
+        sheet_name: category,
+        id: new_id,
+        sheet_image:
+          "https://i0.wp.com/programmingwithmosh.com/wp-content/uploads/2019/01/2000px-React-icon.svg_.png?fit=2000%2C1413&ssl=1",
+        items: [],
+      });
+      setData(newData);
+    }
+  };
+
+  const addItem = (itemName) => {
+    const items = tallySheetData[0].items;
+    console.log(tallySheetData[0]);
+    const item_names = items.map((item) => item.item_name);
+
+    if (item_names.includes(itemName)) {
+      setWarning({
+        on: true,
+        message: `${itemName} is already in the list of items`,
+      });
+    } else {
+      const newData = _.cloneDeep(data);
+      for (const dataSheet of newData) {
+        if (category === dataSheet.sheet_name) {
+          dataSheet.items.push({
+            item_name: itemName,
+            amount: 0,
+            id: items[items.length - 1].id,
+          });
+        }
+      }
+      setData(newData);
+    }
+  };
 
   return (
     <div className="App">
       <header className="App-header">
         {/* <h1 className="App-title">Tally Sheet</h1> */}
-        <NavBar categories={categories} setCategory={setCategory} />
+        {warning.on ? <h1>{warning.message}</h1> : ""}
+        <NavBar
+          categories={categories}
+          setCategory={setCategory}
+          setWarningCallback={setWarning}
+        />
+        <NewCategoryForm
+          categories={categories}
+          addCategoryCallback={addCategory}
+          setCategoryCallback={setCategory}
+          setWarningCallback={setWarning}
+        ></NewCategoryForm>
         <div id="tally_sheet">
           {category ? (
-            <TallySheet sheetData={tallySheetData[0]} />
+            <TallySheet
+              sheetData={tallySheetData[0]}
+              addItemCallback={addItem}
+            />
           ) : (
             <div id="welcome" className="card">
               <h2>Welcome to TallySheet!</h2>

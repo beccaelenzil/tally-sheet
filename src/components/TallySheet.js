@@ -1,7 +1,8 @@
 import SheetItem from "./SheetItem";
+import NewItemForm from "./NewItemForm";
 import "./TallySheet.css";
 
-const TallySheet = ({ sheetData }) => {
+const TallySheet = ({ sheetData, addItemCallback }) => {
   const tallyData = sheetData.items.map((item) => {
     return (
       <SheetItem key={item.id} name={item.item_name} amount={item.amount} />
@@ -15,6 +16,7 @@ const TallySheet = ({ sheetData }) => {
         src={sheetData.sheet_image}
         alt={sheetData.sheet_name}
       ></img>
+      <NewItemForm addItemCallback={addItemCallback} />
       <div className="card-body row">
         <ul className="card-text">{tallyData}</ul>
       </div>
