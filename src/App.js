@@ -6,6 +6,7 @@ import NewCategoryForm from "./components/NewCategoryForm";
 import "./App.css";
 import _ from "lodash";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "./services/firebase";
 
 const UserSheetData = [
   {
@@ -96,13 +97,11 @@ function App() {
   const [category, setCategory] = useState("");
   const [warning, setWarning] = useState({ on: false, message: "" });
 
-  const [user, setUser] = useState(null);
+  const [user, loading, error] = useAuthState(auth);
 
   const categories = data.map((sheet) => sheet.sheet_name);
 
   const tallySheetData = data.filter((sheet) => sheet.sheet_name === category);
-
-  console.log(user);
 
   const addCategory = (category) => {
     if (categories.includes(category)) {
@@ -154,6 +153,7 @@ function App() {
       <header className="App-header">
         {/* <h1 className="App-title">Tally Sheet</h1> */}
         {warning.on ? <h1>{warning.message}</h1> : ""}
+        {user ? <h1>{user.displayName}'s TallySheet</h1> : ""}
         <NavBar
           categories={categories}
           setCategory={setCategory}
