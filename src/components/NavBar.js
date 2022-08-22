@@ -1,10 +1,24 @@
+import { useEffect, useState } from "react";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
+import { auth, logout, signInWithGoogle } from "../services/firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const NavBar = ({ categories, setCategory, setWarningCallback }) => {
   console.log(categories);
   const options = ["", ...categories];
   const defaultOption = options[0];
+  const [user, loading, error] = useAuthState(auth);
+
+  useEffect(() => {
+    if (loading) {
+      // maybe trigger a loading screen
+      return;
+    }
+    if (user) {
+      console.log(user);
+    }
+  }, [user, loading]);
 
   const handleSelect = (event) => {
     if (event.value !== "") {
@@ -24,6 +38,16 @@ const NavBar = ({ categories, setCategory, setWarningCallback }) => {
       <button onClick={() => setWarningCallback({ on: false, message: "" })}>
         Clear Message
       </button>
+      {user ? (
+        <div>
+          <span>Logged in as {user.displayName}</span>
+          <button onClick={logout}>Logout</button>
+        </div>
+      ) : (
+        <button className="button" onClick={signInWithGoogle}>
+          <i className="fab fa-google"></i>Sign in with google
+        </button>
+      )}
     </nav>
   );
 };

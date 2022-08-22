@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 //import LoginForm from "./components/LoginForm";
 import TallySheet from "./components/TallySheet";
 import NavBar from "./components/NavBar";
 import NewCategoryForm from "./components/NewCategoryForm";
 import "./App.css";
 import _ from "lodash";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const UserSheetData = [
   {
@@ -95,9 +96,13 @@ function App() {
   const [category, setCategory] = useState("");
   const [warning, setWarning] = useState({ on: false, message: "" });
 
+  const [user, setUser] = useState(null);
+
   const categories = data.map((sheet) => sheet.sheet_name);
 
   const tallySheetData = data.filter((sheet) => sheet.sheet_name === category);
+
+  console.log(user);
 
   const addCategory = (category) => {
     if (categories.includes(category)) {
