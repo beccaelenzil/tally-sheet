@@ -6,7 +6,8 @@ import NewCategoryForm from "./components/NewCategoryForm";
 import "./App.css";
 import _ from "lodash";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "./services/firebase";
+import { db, auth } from "./services/firebase";
+import { addDoc, collection, onSnapshot } from "firebase/firestore";
 
 const UserSheetData = [
   {
@@ -70,38 +71,29 @@ const UserSheetData = [
   },
 ];
 
-// const AllSheetData = {
-//   birds: {
-//     robin: 5,
-//     bluejay: 4,
-//     crow: 2,
-//   },
-//   trees: {
-//     fir: 2,
-//     pine: 5,
-//     magnolia: 10,
-//     cherry: 4,
-//   },
-//   physics: {
-//     momentum: 2,
-//   },
-//   flowers: {
-//     daisy: 2,
-//     daffodil: 5,
-//   },
-// };
-
 function App() {
   // const [username, setUserName] = useState("");
-  const [data, setData] = useState(UserSheetData);
+  //const [data, setData] = useState(UserSheetData);
+  const [data, setData] = useState([]);
   const [category, setCategory] = useState("");
   const [warning, setWarning] = useState({ on: false, message: "" });
 
   const [user, loading, error] = useAuthState(auth);
 
-  const categories = data.map((sheet) => sheet.sheet_name);
+  const user_sheets = user
+    ? data.filter((sheet) => sheet.user_id === user.uid)
+    : [];
+  const categories = user_sheets.map((sheet) => sheet.sheet_name);
 
-  const tallySheetData = data.filter((sheet) => sheet.sheet_name === category);
+  const tallySheetData = user_sheets.filter(
+    (sheet) => sheet.sheet_name === category
+  );
+
+  useEffect(() => {
+    onSnapshot(collection(db, "sheets"), (snapshot) => {
+      setData(snapshot.docs.map((doc) => doc.data()));
+    });
+  }, []);
 
   const addCategory = (category) => {
     if (categories.includes(category)) {
@@ -110,16 +102,23 @@ function App() {
         message: `${category} is already in the list of categories`,
       });
     } else {
-      const new_id = data[data.length - 1].id + 1;
-      const newData = _.cloneDeep(data);
-      newData.push({
+      addDoc(collection(db, "sheets"), {
         sheet_name: category,
-        id: new_id,
         sheet_image:
           "https://i0.wp.com/programmingwithmosh.com/wp-content/uploads/2019/01/2000px-React-icon.svg_.png?fit=2000%2C1413&ssl=1",
+        user_id: user.uid,
         items: [],
       });
-      setData(newData);
+      // const new_id = data[data.length - 1].id + 1;
+      // const newData = _.cloneDeep(data);
+      // newData.push({
+      //   sheet_name: category,
+      //   id: new_id,
+      //   sheet_image:
+      //     "https://i0.wp.com/programmingwithmosh.com/wp-content/uploads/2019/01/2000px-React-icon.svg_.png?fit=2000%2C1413&ssl=1",
+      //   items: [],
+      // });
+      // setData(newData);
     }
   };
 
@@ -134,17 +133,17 @@ function App() {
         message: `${itemName} is already in the list of items`,
       });
     } else {
-      const newData = _.cloneDeep(data);
-      for (const dataSheet of newData) {
-        if (category === dataSheet.sheet_name) {
-          dataSheet.items.push({
-            item_name: itemName,
-            amount: 0,
-            id: items[items.length - 1].id,
-          });
-        }
-      }
-      setData(newData);
+      // const newData = _.cloneDeep(data);
+      // for (const dataSheet of newData) {
+      //   if (category === dataSheet.sheet_name) {
+      //     dataSheet.items.push({
+      //       item_name: itemName,
+      //       amount: 0,
+      //       id: items[items.length - 1].id,
+      //     });
+      //   }
+      // }
+      // setData(newData);
     }
   };
 
@@ -158,15 +157,20 @@ function App() {
           categories={categories}
           setCategory={setCategory}
           setWarningCallback={setWarning}
+          warning={warning}
         />
-        <NewCategoryForm
-          categories={categories}
-          addCategoryCallback={addCategory}
-          setCategoryCallback={setCategory}
-          setWarningCallback={setWarning}
-        ></NewCategoryForm>
+        {user ? (
+          <NewCategoryForm
+            categories={categories}
+            addCategoryCallback={addCategory}
+            setCategoryCallback={setCategory}
+            setWarningCallback={setWarning}
+          ></NewCategoryForm>
+        ) : (
+          ""
+        )}
         <div id="tally_sheet">
-          {category ? (
+          {category && user ? (
             <TallySheet
               sheetData={tallySheetData[0]}
               addItemCallback={addItem}
@@ -175,7 +179,7 @@ function App() {
             <div id="welcome" className="card">
               <h2>Welcome to TallySheet!</h2>
               <p className="card-text">
-                Select a category to see your current tallies.
+                Sign in to see your tallies or add to your tallies.
               </p>
             </div>
           )}

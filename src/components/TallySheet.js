@@ -3,6 +3,7 @@ import NewItemForm from "./NewItemForm";
 import "./TallySheet.css";
 
 const TallySheet = ({ sheetData, addItemCallback }) => {
+  console.log(sheetData);
   const tallyData = sheetData.items.map((item) => {
     return (
       <SheetItem key={item.id} name={item.item_name} amount={item.amount} />

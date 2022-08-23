@@ -10,7 +10,7 @@ const NewCategoryForm = ({
   const submitCategory = (e) => {
     e.preventDefault();
     addCategoryCallback(category);
-    setCategoryCallback(category);
+    //setCategoryCallback(category);
     setCategory("");
   };
 
